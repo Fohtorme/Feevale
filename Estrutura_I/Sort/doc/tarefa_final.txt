@@ -1,0 +1,27 @@
+Nome: Jonas Rafael Duarte dos Santos
+Matrícula: 0205917
+
+Observações: As funções de busca, invés de retornar 1 ao encontrar e 0 ao não encontrar, eu deixei retornando:
+ "-1" -> Caso não encontre o elemento
+ posição do elemento -> Caso encontre o elemento
+
+ d/e) Tempos para 50000 execuções (com valores que podem ou não estar nos vetores):
+    Elementos   sequencialSearch()  binaryIterativeSearch() binaryRecursiveSearch()
+    10k         1,146 segundos      menos de 0.1 segundos   menos de 0.1 segundos
+    50k         3,850 segundos      menos de 0.1 segundos   menos de 0.1 segundos
+    100k        5,501 segundos      menos de 0.1 segundos   menos de 0.1 segundos
+    200k        9,263 segundos      menos de 0.1 segundos   menos de 0.1 segundos
+
+Observação: Os tempos para busca binária, por serem muito baixos, acabam tendo uma resolução ruim e a medida acaba
+sendo imprecisa, por isso coloquei menos de "0.1 segundos", pois nenhum teste passou disso para essas buscas.
+
+ e) A pilha de execução abaixo tem o seguinte formato:
+    binaryRecursiveSearchStack( [ponteiro_do_vetor] -> [valor_do_primeiro_elemento],
+                                [tamanho_do_vetor],
+                                [valor_a_ser_encontrado]);
+
+    binaryRecursiveSearchStack(6422196-> 1,15,65);
+    binaryRecursiveSearchStack(6422196-> 1, 7,65);
+    binaryRecursiveSearchStack(6422212->58, 3,65);
+    binaryRecursiveSearchStack(6422220->71, 1,65);
+    binaryRecursiveSearchStack(6422220->71, 0,65);
