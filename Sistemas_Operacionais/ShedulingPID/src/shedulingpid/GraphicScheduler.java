@@ -5,8 +5,6 @@ package shedulingpid;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.Timer;
 import javax.swing.table.TableModel;
 
@@ -17,10 +15,7 @@ import javax.swing.table.TableModel;
 public class GraphicScheduler extends javax.swing.JPanel implements ActionListener {
 
     private final Timer timer;
-    private int time;
-    private final List<Process> processes;
-    private int runningProcess;
-    private int runningProcessTime;
+    private final Sheduler sheduler;
 
     /**
      * Creates new form GraphicScheduler
@@ -29,150 +24,50 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
         initComponents();
         this.timer = new Timer(1000, this);
         this.timer.start();
-        this.time = 0;
-        this.processes = new ArrayList<>();
-        this.runningProcess = -1;
-        this.runningProcessTime = 0;
+        sheduler = new Sheduler();
     }
 
     @Override
     public void actionPerformed(ActionEvent ev) {
         if (ev.getSource() == this.timer) {
-            executeProcess();
+            sheduler.setQuantum(Integer.parseInt(quantumField.getSelectedItem().toString()));
+            sheduler.runProcess(loadType());
+            updateInterface();
         }
-
     }
 
-    private void executeProcess() {
-        this.time++;
-        currentTimeField.setText(this.time + "");
-
+    private ShedulerType loadType() {
         switch (shedulerField.getSelectedItem().toString()) {
             case "Not Preemptive":
-                notPreemptive();
-                break;
+                return ShedulerType.NOT_PREEMPTIVE;
             case "Preemptive for Priority":
-                preemptiveForPriority();
-                break;
+                return ShedulerType.PREEMPTIVE_FOR_PRIORITY;
             case "Preemptive for Priority + Time":
-                preemptiveForPriorityAndTime();
-                break;
+                return ShedulerType.PREEMPTIVE_FOR_PRIORITY_AND_TIME;
         }
-
-        updateTable();
+        return null;
     }
 
-    private void notPreemptive() {
-        // Run the first process awaiting
-        for (int i = 0; i < processes.size(); i++) {
-            if (!processes.get(i).isFinished()) {
-                runProcess(i, 0);
-                break;
-            }
-        }
-    }
-
-    private void preemptiveForPriority() {
-        // Find the high priority element
-        int priority = -1;
-        int elementIndex = -1;
-        for (int i = 0; i < processes.size(); i++) {
-            // Ignore finished processes
-            if (processes.get(i).isFinished()) {
-                continue;
-            }
-            // If find a greater prioriry element
-            if (processes.get(i).getPriority() > priority) {
-                priority = processes.get(i).getPriority();
-                elementIndex = i;
-            }
-        }
-        // If element was not finded
-        if (elementIndex == -1) {
-            return;
-        }
-        // Run the high priority element
-        runProcess(elementIndex, 0);
-    }
-
-    private void preemptiveForPriorityAndTime() {
-        // Find the high priority element
-        int priority = -1;
-        int elementIndex = -1;
-        for (int i = 0; i < processes.size(); i++) {
-            // Ignore finished processes
-            if (processes.get(i).isFinished()) {
-                continue;
-            }
-            // If find a greater prioriry element
-            if (processes.get(i).getPriority() > priority) {
-                priority = processes.get(i).getPriority();
-                elementIndex = i;
-            }
-            // If it's not the same priority
-            if (processes.get(i).getPriority() != priority) {
-                continue;
-            }
-            // If the process time is not over
-            if (runningProcessTime != 0) {
-                // If it's the process running
-                if (processes.get(i).getId() == this.runningProcess) {
-                    elementIndex = i;
-                }
-                continue;
-            }
-            // If it is not the next process
-            if (!(processes.get(i).getId() > this.runningProcess)) {
-                continue;
-            }
-            // If already had find a next element
-            if (processes.get(elementIndex).getId() > this.runningProcess) {
-                // If the element finded is lesser than the current element
-                if (processes.get(i).getId() < processes.get(elementIndex).getId()) {
-                    elementIndex = i;
-                }
-            } else {
-                elementIndex = i;
-            }
-        }
-        // If element was not finded
-        if (elementIndex == -1) {
-            return;
-        }
-        // If the element has been swapped
-        if (processes.get(elementIndex).getId() != this.runningProcess) {
-            this.runningProcessTime = Integer.parseInt(quantumField.getSelectedItem().toString()) - 1;
-        } else {
-            this.runningProcessTime--;
-        }
-        // Run the high priority element
-        runProcess(elementIndex, this.runningProcessTime);
-    }
-
-    private void runProcess(int i, int q) {
-        processes.get(i).runProcess(time);
-        this.runningProcess = processes.get(i).getId();
-        quantumTimeField.setText((q + 1) + "");
-    }
-
-    private void updateTable() {
+    private void updateInterface() {
         // Sheduler status
         String status = "IDLE";
         TableModel tm = processesTable.getModel();
-        for (int i = 0; i < processes.size(); i++) {
-            tm.setValueAt(processes.get(i).getId(), i, 0);
-            tm.setValueAt(processes.get(i).getPriority(), i, 1);
-            tm.setValueAt(processes.get(i).getTotalTime(), i, 2);
-            tm.setValueAt(processes.get(i).getRemainingTime(), i, 3);
-            tm.setValueAt(processes.get(i).getStartTime(), i, 4);
-            tm.setValueAt(processes.get(i).getEndTime(), i, 5);
-            tm.setValueAt(processes.get(i).getLeadTime(time), i, 6);
-            tm.setValueAt(processes.get(i).getStatus(time), i, 7);
-            if (processes.get(i).getStatus(time).equals("Running")) {
+        for (int i = 0; i < sheduler.getProcesses().size(); i++) {
+            tm.setValueAt(sheduler.getProcesses().get(i).getId(), i, 0);
+            tm.setValueAt(sheduler.getProcesses().get(i).getPriority(), i, 1);
+            tm.setValueAt(sheduler.getProcesses().get(i).getTotalTime(), i, 2);
+            tm.setValueAt(sheduler.getProcesses().get(i).getRemainingTime(), i, 3);
+            tm.setValueAt(sheduler.getProcesses().get(i).getStartTime(), i, 4);
+            tm.setValueAt(sheduler.getProcesses().get(i).getEndTime(), i, 5);
+            tm.setValueAt(sheduler.getProcesses().get(i).getLeadTime(sheduler.getTime()), i, 6);
+            tm.setValueAt(sheduler.getProcesses().get(i).getStatus(sheduler.getTime()), i, 7);
+            if (sheduler.getProcesses().get(i).getStatus(sheduler.getTime()).equals("Running")) {
                 status = "RUNNING";
             }
         }
         shedulerStatusField.setText(status);
+        currentTimeField.setText(this.sheduler.getTime() + "");
+        quantumTimeField.setText(sheduler.getQuantumRemainingTime() + "");
     }
 
     /**
@@ -455,17 +350,15 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
     }// </editor-fold>//GEN-END:initComponents
 
     private void addProcessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProcessButtonActionPerformed
-        processes.add(new Process(
+        sheduler.addProcess(
                 Integer.parseInt(processPriorityField.getSelectedItem().toString()),
-                Integer.parseInt(processTimeField.getSelectedItem().toString()),
-                this.time
-        ));
-        updateTable();
+                Integer.parseInt(processTimeField.getSelectedItem().toString()));
+        updateInterface();
     }//GEN-LAST:event_addProcessButtonActionPerformed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        int processesSize = processes.size();
-        this.processes.clear();
+        int processesSize = sheduler.getProcesses().size();
+        sheduler.getProcesses().clear();
         TableModel tm = processesTable.getModel();
         for (int i = 0; i < processesSize; i++) {
             for (int j = 0; j < tm.getColumnCount(); j++) {
