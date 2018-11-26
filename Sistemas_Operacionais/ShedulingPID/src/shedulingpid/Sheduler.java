@@ -148,7 +148,10 @@ public class Sheduler {
         if (this.type != ShedulerType.PREEMPTIVE_FOR_PRIORITY_AND_TIME) {
             return 0;
         }
-        return quantumRemainingTime + 1;
+        for (int i = 0; i < processes.size(); i++) {
+            if(!processes.get(i).isFinished()) return quantumRemainingTime + 1;
+        }
+        return 0;
     }
 
     public List<Process> getProcesses() {
