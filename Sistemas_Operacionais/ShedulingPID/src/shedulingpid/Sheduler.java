@@ -18,29 +18,17 @@ public class Sheduler {
     private int quantum;
     private int quantumRemainingTime;
     private ShedulerType type;
-    private boolean idle;
-    private boolean idleAux;
-    private int startTime;
-    private int endTime;
-    private int mediumTime;
 
     Sheduler() {
         this.time = 0;
         this.processes = new ArrayList<>();
         this.runningProcess = -1;
         this.quantumRemainingTime = 0;
-        this.idle = true;
-        this.idleAux = true;
-        this.startTime = 0;
-        this.endTime = 0;
-        this.mediumTime = 0;
     }
 
     public void runProcess(ShedulerType type) {
         this.time++;
         this.type = type;
-
-        this.idleAux = true;
 
         switch (this.type) {
             case NOT_PREEMPTIVE:
@@ -52,18 +40,6 @@ public class Sheduler {
             case PREEMPTIVE_FOR_PRIORITY_AND_TIME:
                 preemptiveForPriorityAndTime();
                 break;
-        }
-
-        if(this.idle != this.idleAux){
-            this.idle = this.idleAux;
-            if(this.idle){
-                this.endTime = this.time;
-                // this.mediumTime = sum(tempo de espera)/total de processos
-            } else {
-                this.startTime = this.time;
-                this.endTime = 0;
-                this.mediumTime = 0;
-            }
         }
 
     }
@@ -159,7 +135,6 @@ public class Sheduler {
     private void runProcess(int i) {
         processes.get(i).runProcess(time);
         this.runningProcess = processes.get(i).getId();
-        this.idleAux = false;
     }
 
     public int getTime() {
@@ -175,7 +150,9 @@ public class Sheduler {
             return 0;
         }
         for (int i = 0; i < processes.size(); i++) {
-            if(!processes.get(i).isFinished()) return quantumRemainingTime + 1;
+            if (!processes.get(i).isFinished()) {
+                return quantumRemainingTime + 1;
+            }
         }
         return 0;
     }
@@ -188,16 +165,17 @@ public class Sheduler {
         processes.add(new Process(priority, totalTime, this.getTime()));
     }
 
-    public int getStartTime() {
-        return startTime;
-    }
-
-    public int getEndTime() {
-        return endTime;
-    }
-
-    public int getMediumTime() {
-        return mediumTime;
+    public float getMediumTime() {
+        int sumOfLeadTime = 0;
+        int processQuantity = 0;
+        for (int i = 0; i < processes.size(); i++) {
+            if (processes.get(i).isFinished()) {
+                sumOfLeadTime += processes.get(i).getLeadTime(time);
+                processQuantity++;
+            }
+        }
+        if(processQuantity == 0) return 0;
+        return (float) sumOfLeadTime / processQuantity;
     }
 
 }

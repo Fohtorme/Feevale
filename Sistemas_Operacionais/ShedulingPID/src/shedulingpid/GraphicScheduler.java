@@ -22,7 +22,7 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
      */
     public GraphicScheduler() {
         initComponents();
-        this.timer = new Timer(1000, this);
+        this.timer = new Timer(400, this);
         this.timer.start();
         sheduler = new Sheduler();
     }
@@ -68,9 +68,7 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
         shedulerStatusField.setText(status);
         currentTimeField.setText(this.sheduler.getTime() + "");
         quantumTimeField.setText(sheduler.getQuantumRemainingTime() + "");
-        startTimeField.setText(sheduler.getStartTime() + "");
-        endTimeField.setText(sheduler.getEndTime() + "");
-        mediumTimeField.setText(sheduler.getMediumTime() + "");
+        mediumTimeField.setText(String.format("%.4f", sheduler.getMediumTime()));
     }
 
     /**
@@ -88,23 +86,19 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
         addProcessButton = new javax.swing.JButton();
         currentTimeField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        processPriorityField = new javax.swing.JComboBox<String>();
+        processPriorityField = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        processTimeField = new javax.swing.JComboBox<String>();
+        processTimeField = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        quantumField = new javax.swing.JComboBox<String>();
-        shedulerField = new javax.swing.JComboBox<String>();
+        quantumField = new javax.swing.JComboBox<>();
+        shedulerField = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         clearButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         quantumTimeField = new javax.swing.JTextField();
         shedulerStatusField = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        startTimeField = new javax.swing.JTextField();
-        endTimeField = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
         mediumTimeField = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
 
@@ -240,19 +234,19 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
 
         jLabel1.setText("Current time");
 
-        processPriorityField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+        processPriorityField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 
         jLabel2.setText("Process priority");
 
         jLabel3.setText("Process time");
 
-        processTimeField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" }));
+        processTimeField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20" }));
 
         jLabel4.setText("Quantum");
 
-        quantumField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
+        quantumField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }));
 
-        shedulerField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Not Preemptive", "Preemptive for Priority", "Preemptive for Priority + Time" }));
+        shedulerField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Not Preemptive", "Preemptive for Priority", "Preemptive for Priority + Time" }));
 
         jLabel5.setText("Sheduler");
 
@@ -271,16 +265,6 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
         shedulerStatusField.setEnabled(false);
 
         jLabel7.setText("Status");
-
-        jLabel8.setText("Start time");
-
-        startTimeField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        startTimeField.setEnabled(false);
-
-        endTimeField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        endTimeField.setEnabled(false);
-
-        jLabel9.setText("End time");
 
         mediumTimeField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         mediumTimeField.setEnabled(false);
@@ -305,18 +289,8 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
                             .addComponent(quantumTimeField))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(endTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel9)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
-                            .addComponent(mediumTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(mediumTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -366,19 +340,13 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
                                 .addGap(8, 8, 8)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel1)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel8)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10))))
+                                    .addComponent(jLabel6))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(processTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(processPriorityField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(currentTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(quantumTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(startTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(endTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(mediumTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(quantumTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -386,7 +354,11 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(quantumField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(addProcessButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(addProcessButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(mediumTimeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(9, 9, 9)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
                 .addContainerGap())
@@ -416,7 +388,6 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
     private javax.swing.JButton addProcessButton;
     private javax.swing.JButton clearButton;
     private javax.swing.JTextField currentTimeField;
-    private javax.swing.JTextField endTimeField;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -426,8 +397,6 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField mediumTimeField;
     private javax.swing.JComboBox<String> processPriorityField;
@@ -437,6 +406,5 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
     private javax.swing.JTextField quantumTimeField;
     private javax.swing.JComboBox<String> shedulerField;
     private javax.swing.JTextField shedulerStatusField;
-    private javax.swing.JTextField startTimeField;
     // End of variables declaration//GEN-END:variables
 }
