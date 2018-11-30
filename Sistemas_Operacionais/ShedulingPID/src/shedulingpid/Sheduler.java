@@ -87,6 +87,14 @@ public class Sheduler {
             if (processes.get(i).isFinished()) {
                 continue;
             }
+            // If the process time is not over
+            if (quantumRemainingTime != 0) {
+                // If it's the process running
+                if (processes.get(i).getId() == this.runningProcess) {
+                    elementIndex = i;
+                }
+                continue;
+            }
             // If find a greater prioriry element
             if (processes.get(i).getPriority() > priority) {
                 priority = processes.get(i).getPriority();
@@ -94,14 +102,6 @@ public class Sheduler {
             }
             // If it's not the same priority
             if (processes.get(i).getPriority() != priority) {
-                continue;
-            }
-            // If the process time is not over
-            if (quantumRemainingTime != 0) {
-                // If it's the process running
-                if (processes.get(i).getId() == this.runningProcess) {
-                    elementIndex = i;
-                }
                 continue;
             }
             // If it is not the next process
@@ -120,6 +120,7 @@ public class Sheduler {
         }
         // If element was not finded
         if (elementIndex == -1) {
+            this.quantumRemainingTime = 0;
             return;
         }
         // If the element has been swapped
@@ -130,6 +131,11 @@ public class Sheduler {
         }
         // Run the high priority element
         runProcess(elementIndex);
+        // If the process is over
+        if(processes.get(elementIndex).isFinished()){
+            this.quantumRemainingTime = 0;
+        }
+        
     }
 
     private void runProcess(int i) {

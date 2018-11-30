@@ -22,7 +22,7 @@ public class GraphicScheduler extends javax.swing.JPanel implements ActionListen
      */
     public GraphicScheduler() {
         initComponents();
-        this.timer = new Timer(400, this);
+        this.timer = new Timer(1000, this);
         this.timer.start();
         sheduler = new Sheduler();
     }
