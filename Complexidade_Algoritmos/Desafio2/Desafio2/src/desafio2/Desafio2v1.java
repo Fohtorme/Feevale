@@ -83,38 +83,40 @@ public class Desafio2v1 {
 
     private void greaterGoldbathSets(int min, int max) {
         ArrayList<Integer> primalNumbers = loadPrimalNumbers(max);
-        
+
         ArrayList<String> gSets;
 
         int[] eCount = new int[3];
         String[] eFormated = new String[3];
         int[] eNumber = new int[3];
-        
+
         int index;
 
         for (int g = min; g <= max; g += 2) {
             index = 0;
-            for (int e=1; e < eCount.length; e++) {
-                if(eCount[e] < eCount[index]) index = e;
+            for (int e = 1; e < eCount.length; e++) {
+                if (eCount[e] < eCount[index]) {
+                    index = e;
+                }
             }
             gSets = getGoldbathSets(g, primalNumbers);
-            if(eCount[index] < gSets.size()){
-                eCount[index]=gSets.size();
-                eFormated[index]=gSets.toString();
-                eNumber[index]=g;
+            if (eCount[index] < gSets.size()) {
+                eCount[index] = gSets.size();
+                eFormated[index] = gSets.toString();
+                eNumber[index] = g;
             }
         }
-        
-        for(int i=0;i<3;i++){
-            System.out.println("G("+eNumber[i]+")="+eFormated[i]);
+
+        for (int i = 0; i < 3; i++) {
+            System.out.println("G(" + eNumber[i] + ")=" + eFormated[i]);
         }
     }
 
     private void run() {
         long inicio = System.currentTimeMillis();
-        
+
         greaterGoldbathSets(1000000, 1000010);
-        
+
         long fim = System.currentTimeMillis();
         System.out.println(new SimpleDateFormat("ss.SSS").format(new Date(fim - inicio)));
     }
