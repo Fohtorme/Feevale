@@ -51,18 +51,18 @@ public class Desafio2v1 {
         return index;
     }
 
-    private ArrayList<String> getGoldbathSets(int number, ArrayList<Integer> primalNumbers) {
+    private ArrayList<String> getGoldbachSets(int number, ArrayList<Integer> primalNumbers) {
         int minIndex = 0;
         int maxIndex = firstLesserThan(number, primalNumbers);
         int val;
-        ArrayList<String> goldbathSets = new ArrayList();
+        ArrayList<String> goldbachSets = new ArrayList();
         while (true) {
             if (minIndex > maxIndex) {
                 break;
             }
             val = primalNumbers.get(minIndex) + primalNumbers.get(maxIndex);
             if (val == number) {
-                goldbathSets.add("("
+                goldbachSets.add("("
                         + primalNumbers.get(minIndex) + ","
                         + primalNumbers.get(maxIndex) + ")");
                 minIndex++;
@@ -78,10 +78,10 @@ public class Desafio2v1 {
                 continue;
             }
         }
-        return goldbathSets;
+        return goldbachSets;
     }
 
-    private void greaterGoldbathSets(int min, int max) {
+    private void greaterGoldbachSets(int min, int max) {
         ArrayList<Integer> primalNumbers = loadPrimalNumbers(max);
 
         ArrayList<String> gSets;
@@ -99,7 +99,7 @@ public class Desafio2v1 {
                     index = e;
                 }
             }
-            gSets = getGoldbathSets(g, primalNumbers);
+            gSets = getGoldbachSets(g, primalNumbers);
             if (eCount[index] < gSets.size()) {
                 eCount[index] = gSets.size();
                 eFormated[index] = gSets.toString();
@@ -115,7 +115,7 @@ public class Desafio2v1 {
     private void run() {
         long inicio = System.currentTimeMillis();
 
-        greaterGoldbathSets(1000000, 1000010);
+        greaterGoldbachSets(1000000, 1000010);
 
         long fim = System.currentTimeMillis();
         System.out.println(new SimpleDateFormat("ss.SSS").format(new Date(fim - inicio)));

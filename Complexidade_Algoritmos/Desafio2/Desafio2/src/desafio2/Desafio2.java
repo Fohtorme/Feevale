@@ -46,7 +46,7 @@ public class Desafio2 {
         ArrayList<Integer> primes = loadPrimalNumbers(max);
 
         int arrLen = ((max - min) / 2) + 1;
-        int[] goldbathCount = new int[arrLen];
+        int[] goldbachCount = new int[arrLen];
 
         ArrayList<ArrayList<Integer[]>> aux = new ArrayList(arrLen);
         
@@ -56,7 +56,7 @@ public class Desafio2 {
             for (int p2 = p1; p2 < primes.size(); p2++) {
                 val = primes.get(p1) + primes.get(p2);
                 if (val >= min && val <= max ) {
-                    goldbathCount[(val - min) / 2]++;
+                    goldbachCount[(val - min) / 2]++;
                 }
             }
         }
@@ -64,13 +64,13 @@ public class Desafio2 {
         int index;
         int[] greaters = new int[qtd];
         
-        for(int i = 0; i < goldbathCount.length;i++){
+        for(int i = 0; i < goldbachCount.length;i++){
             index = 0;
             for (int e=1; e < greaters.length; e++) {
                 if(greaters[e] < greaters[index]) index = e;
             }
             
-            if(goldbathCount[i]>goldbathCount[greaters[index]]){
+            if(goldbachCount[i]>goldbachCount[greaters[index]]){
                 greaters[index] = i;
             }
         }
@@ -78,7 +78,7 @@ public class Desafio2 {
         ArrayList<Integer> ret = new ArrayList<>();
         for (int i = 0; i < qtd; i++) {
             ret.add(greaters[i] * 2 + min);
-//            ret.add(goldbathCount[greaters[i]]);
+//            ret.add(goldbachCount[greaters[i]]);
         }
         return ret;
     }
