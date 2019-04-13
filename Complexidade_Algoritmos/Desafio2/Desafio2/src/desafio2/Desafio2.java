@@ -49,28 +49,40 @@ public class Desafio2 {
         int[] goldbachCount = new int[arrLen];
 
         ArrayList<ArrayList<Integer[]>> aux = new ArrayList(arrLen);
-        
+
         int val;
 
+        int vp1;
+        int vp2;
         for (int p1 = 1; p1 < primes.size(); p1++) {
-            for (int p2 = p1; p2 < primes.size(); p2++) {
-                val = primes.get(p1) + primes.get(p2);
-                if (val >= min && val <= max ) {
+            vp1 = primes.get(p1);
+            if (vp1 * 2 > max) {
+                break;
+            }
+            for (int p2 = (primes.size() - 1); p2 >= p1; p2--) {
+                vp2 = primes.get(p2);
+                if ((vp1 + vp2) < min) {
+                    break;
+                }
+                val = vp1 + vp2;
+                if (val >= min && val <= max) {
                     goldbachCount[(val - min) / 2]++;
                 }
             }
         }
-        
+
         int index;
         int[] greaters = new int[qtd];
-        
-        for(int i = 0; i < goldbachCount.length;i++){
+
+        for (int i = 0; i < goldbachCount.length; i++) {
             index = 0;
-            for (int e=1; e < greaters.length; e++) {
-                if(greaters[e] < greaters[index]) index = e;
+            for (int e = 1; e < greaters.length; e++) {
+                if (greaters[e] < greaters[index]) {
+                    index = e;
+                }
             }
-            
-            if(goldbachCount[i]>goldbachCount[greaters[index]]){
+
+            if (goldbachCount[i] > goldbachCount[greaters[index]]) {
                 greaters[index] = i;
             }
         }

@@ -5,11 +5,10 @@
  */
 package desafio4;
 
-import java.lang.reflect.Array;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 
 /**
  *
@@ -17,82 +16,58 @@ import java.util.Arrays;
  */
 public class Desafio4 {
 
-    private ArrayList<Integer> loadPrimalNumbers(int max) {
-        ArrayList<Integer> primes = new ArrayList();
-        primes.add(2);
+    public int[] getInvalidValues(int max, int... moedas) {
 
-        boolean isPrime;
+        TreeSet<Integer> valids = new TreeSet<>();
 
-        for (int i = 3; i <= max; i += 2) {
+        int i1;
+        int i2;
 
-            isPrime = true;
+        int v1;
+        int v2;
 
-            int sqrtI = (int) Math.round(Math.sqrt(i));
+        for (i1 = 0; i1 < moedas.length; i1++) {
+            valids.add(moedas[i1]);
+        }
 
-            for (int j = 0; j < primes.size() && j < sqrtI; j++) {
-                if ((i % primes.get(j)) == 0) {
-                    isPrime = false;
+        for (i1 = 1; i1 <= max; i1++) {
+            if (!valids.contains(i1)) {
+                continue;
+            }
+            for (i2 = i1; i2 <= max; i2++) {
+                if (!valids.contains(i2)) {
+                    continue;
+                }
+                if ((i1 + i2) > max) {
                     break;
                 }
-            }
-
-            if (isPrime) {
-                primes.add(i);
-            }
-        }
-
-        return primes;
-    }
-
-    private boolean valorValido(int num, ArrayList<Integer> moedas) {
-        if (num == 0) {
-            return true;
-        }
-        for (int i = moedas.size() - 1; i >= 0; i--) {
-            if (num >= moedas.get(i) && valorValido(num % moedas.get(i), moedas)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private int valoresInvalidos(int max, Integer... moedas) {
-
-        Arrays.sort(moedas);
-
-        ArrayList<Integer> mList = new ArrayList<>(Arrays.asList(moedas));
-
-        if (mList.isEmpty()) {
-            return max;
-        }
-
-        if (mList.get(0) == 1) {
-            return 0;
-        }
-        for (int i = mList.size() - 1; i >= 0; i--) {
-            for (int j = i - 1; j >= 0; j--) {
-                if (mList.get(i) % mList.get(j) == 0) {
-                    mList.remove(i);
-                    break;
+                if (!valids.contains(i1 + i2)) {
+                    valids.add(i1 + i2);
                 }
             }
         }
 
-        int qtd = 0;
-        for (int i = 1; i <= max; i++) {
-            if (!valorValido(i, mList)) {
-                qtd++;
+        int[] invalids = new int[max - valids.size()];
+
+        i2 = 0;
+        for (i1 = 1; i1 <= max; i1++) {
+            if (!valids.contains(i1)) {
+                invalids[i2] = i1;
+                i2++;
             }
         }
 
-        return qtd;
+        return invalids;
     }
 
     private void run() {
         long inicio = System.currentTimeMillis();
 
-        System.out.println(valoresInvalidos(10000, 50, 30, 3));
-        System.out.println(valoresInvalidos(10000));
+        System.out.println(Arrays.toString(getInvalidValues(10000, 3, 5)));
+        System.out.println(Arrays.toString(getInvalidValues(10000, 30, 50, 3)));
+        System.out.println(Arrays.toString(getInvalidValues(10000)));
+        System.out.println(Arrays.toString(getInvalidValues(10000, 1)));
+        System.out.println(Arrays.toString(getInvalidValues(10000, 2)));
 
         long fim = System.currentTimeMillis();
         System.out.println(new SimpleDateFormat("ss.SSS").format(new Date(fim - inicio)));
