@@ -66,6 +66,7 @@ public class Desafio6 {
         formatToSimpsons(getGreatestCombination(54, 3, 5));
         formatToSimpsons(getGreatestCombination(55, 3, 5));
         formatToSimpsons(getGreatestCombination(10, 4, 7));
+        formatToSimpsons(getGreatestCombination(12, 3, 4));
 
         long fim = System.currentTimeMillis();
         System.out.println(new SimpleDateFormat("ss.SSS").format(new Date(fim - inicio)));
