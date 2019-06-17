@@ -5,6 +5,7 @@
 package desafio6;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -13,80 +14,58 @@ import java.util.Date;
  */
 public class Desafio6 {
 
-    class Hamburguers extends Exception {
+    public int[] getGreatestCombination(int idealValue, int... initialValues) {
 
-        private int hamburguers;
-        private int tempoCeva;
+        int[] values = new int[idealValue + 1];
 
-        public Hamburguers(int hamburguers, int tempoCeva) {
-            this.hamburguers = hamburguers;
-            this.tempoCeva = tempoCeva;
+        int i1;
+        int i2;
+
+        for (i1 = 0; i1 < initialValues.length; i1++) {
+            values[initialValues[i1]] = 1;
         }
 
-        public int getHamburguers() {
-            return hamburguers;
+        for (i1 = 1; i1 <= idealValue; i1++) {
+            if (values[i1] == 0) {
+                continue;
+            }
+            for (i2 = i1; i2 <= idealValue; i2++) {
+                if (values[i2] == 0) {
+                    continue;
+                }
+                if ((i1 + i2) > idealValue) {
+                    break;
+                }
+                if (values[i1 + i2] < (values[i1] + values[i2])) {
+                    values[i1 + i2] = values[i1] + values[i2];
+                }
+            }
         }
 
-        public int getTempoCeva() {
-            return tempoCeva;
+        for (i1 = idealValue; i1 >= 0; i1--) {
+            if (values[i1] != 0) {
+                return new int[]{i1, values[i1], idealValue - i1};
+            }
         }
 
-        @Override
-        public String toString() {
-            return "Homer comeu " + hamburguers + " hamburguers e bebeu cerveja por " + tempoCeva + " minutos!";
-        }
-
+        return new int[]{0, 0, idealValue};
     }
 
-    public void contaHamburguers(int n, int m, int t) throws Hamburguers {
-        if (t < 0) {
-            throw new Hamburguers(0, t);
-        }
-        if (t == 0) {
-            throw new Hamburguers(0, 0);
-        }
-        int h;
-        int t1 = -1;
-        Hamburguers h1 = new Hamburguers(0, 0);
-        h = n < m ? n : m;
-        try {
-            contaHamburguers(n, m, t - h);
-        } catch (Hamburguers hEx) {
-            h1 = hEx;
-        }
-        int t2 = -1;
-        Hamburguers h2 = new Hamburguers(0, 0);
-        h = n > m ? n : m;
-        try {
-            contaHamburguers(n, m, t - h);
-        } catch (Hamburguers hEx) {
-            h2 = hEx;
-        }
-        if (h1.getTempoCeva() <= h2.getTempoCeva()) {
-            if (h1.getTempoCeva() < 0) {
-                throw new Hamburguers(h1.getHamburguers(), t);
-            } else {
-                throw new Hamburguers(h1.getHamburguers() + 1, h1.getTempoCeva());
-            }
-
+    public void formatToSimpsons(int[] values) {
+        if (values[2] == 0) {
+            System.out.printf("Homer comeu %d hamburguers e Marge ficou muito contente por ele ter voltado para casa sem beber nada!\n", values[1]);
         } else {
-            if (h2.getTempoCeva() < 0) {
-                throw new Hamburguers(h2.getHamburguers(), t);
-            } else {
-                throw new Hamburguers(h2.getHamburguers() + 1, h2.getTempoCeva());
-            }
+            System.out.printf("Homer comeu %d hamburguers e ainda sobrou %d minutos para encher a cara de ceva!\n", values[1], values[2]);
         }
     }
 
     public void run() {
         long inicio = System.currentTimeMillis();
 
-        try {
-            contaHamburguers(3, 5, 4);
-        } catch (Hamburguers hEx) {
-            System.out.println(hEx.toString());
-        }
-        //contaHamburguers(3, 5, 7);
+        formatToSimpsons(getGreatestCombination(10, 2, 5));
+        formatToSimpsons(getGreatestCombination(54, 3, 5));
+        formatToSimpsons(getGreatestCombination(55, 3, 5));
+        formatToSimpsons(getGreatestCombination(10, 4, 7));
 
         long fim = System.currentTimeMillis();
         System.out.println(new SimpleDateFormat("ss.SSS").format(new Date(fim - inicio)));
